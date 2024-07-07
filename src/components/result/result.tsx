@@ -1,12 +1,10 @@
 import React from 'react';
 
-// Определяем интерфейс для объекта в массиве results
 interface Result {
   name: string;
   homeworld: string;
 }
 
-// Определяем интерфейс для состояния компонента
 interface AppState {
   results: Result[] | null;
 }
