@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 interface Film {
   title: string;
@@ -35,9 +35,11 @@ const SearchedItem: React.FC = () => {
   return (
     <div>
       <div>
-        <button hidden={!data} onClick={() => setData(null)}>
-          close
-        </button>
+        <Link to="/">
+          <button hidden={!data} onClick={() => setData(null)}>
+            close
+          </button>
+        </Link>
       </div>
       <div>
         <h3>{data?.title}</h3>
