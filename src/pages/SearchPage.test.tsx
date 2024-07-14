@@ -1,4 +1,3 @@
-// src/pages/SearchPage.test.tsx
 import { render, screen } from '@testing-library/react';
 import SearchPage from './SearchPage';
 import { MemoryRouter } from 'react-router-dom';
