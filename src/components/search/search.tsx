@@ -8,7 +8,7 @@ const Search: React.FC = () => {
     <div>
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search by ID..."
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
