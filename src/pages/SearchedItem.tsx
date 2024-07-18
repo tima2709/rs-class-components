@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 interface Film {
-  title: string;
-  opening_crawl: string;
+  name: string;
 }
 
 const SearchedItem: React.FC = () => {
@@ -16,7 +15,7 @@ const SearchedItem: React.FC = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://swapi.dev/api/films/${params.id}`,
+          `https://swapi.dev/api/people/${params.id}`,
         );
         const data: Film = await response.json();
         setData(data);
@@ -42,8 +41,7 @@ const SearchedItem: React.FC = () => {
         </Link>
       </div>
       <div>
-        <h3>{data?.title}</h3>
-        <p>{data?.opening_crawl?.split('\r\n').join(' ')}</p>
+        <h3>{data?.name}</h3>
       </div>
     </div>
   );
