@@ -2,62 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import Pagination from '../pagination/pagination';
+import { useGetBerriesQuery } from '../../redux/query/apiSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
+import { selectItem, unselectAll } from '../../redux/slices/selectedItemsSlice';
 
-interface Film {
+interface Berry {
   name: string;
+  url: string;
 }
 
 const Result: React.FC = () => {
-  const [data, setData] = useState<Film[]>([]);
-  const [value] = useLocalStorage<string>('searchTerm', '');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [searchTerm] = useLocalStorage<string>('searchTerm', '');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [page, setPage] = useState(initialPage);
+  const dispatch = useAppDispatch();
+  const selectedItems = useAppSelector((state) => state.selectedItems.items);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        if (value.length) {
-          const response = await fetch(`https://swapi.dev/api/people/${value}`);
-          const data: Film = await response.json();
-          setData([data]);
-          setLoading(false);
-        } else {
-          const response = await fetch(
-            `https://swapi.dev/api/people/?limit=10&page=${page}`,
-          );
-          const data = await response.json();
-          setData(data.results);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [value, page]);
+  const offset = (page - 1) * 10;
+  const { data, error, isLoading } = useGetBerriesQuery({
+    offset,
+    limit: 10,
+    searchTerm,
+  });
 
   useEffect(() => {
     navigate(`?page=${page}`);
   }, [page, navigate]);
 
+  const handleCheckboxChange = (berry: Berry) => {
+    dispatch(selectItem({ id: berry.url, name: berry.name }));
+  };
+
+  const isSelected = (id: string) =>
+    selectedItems.some((item) => item.id === id);
+
+  const handleDownload = () => {
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      +selectedItems.map((item) => `${item.id},${item.name}`).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `${selectedItems.length}_berries.csv`);
+    link.click();
+  };
+
+  if (error) return <div>Ooops</div>;
+
   return (
     <div>
-      {!loading ? (
+      {!isLoading ? (
         <div>
-          {data.length ? (
-            data.map((el, idx) => (
+          {data?.results?.length ? (
+            data.results.map((el: Berry, idx: number) => (
               <div key={idx}>
-                <NavLink to={`/SearchedItem/${idx + 1}`}>{el.name}</NavLink>
+                <input
+                  type="checkbox"
+                  checked={isSelected(el.url)}
+                  onChange={() => handleCheckboxChange(el)}
+                />
+                <NavLink to={`/SearchedItem/${el.name}`}>{el.name}</NavLink>
               </div>
             ))
           ) : (
-            <div>not found</div>
+            <NavLink to={`/SearchedItem/${data.name}`}>{data.name}</NavLink>
           )}
         </div>
       ) : (
@@ -66,6 +76,13 @@ const Result: React.FC = () => {
       <div style={{ marginTop: '20px' }}>
         <Pagination page={page} setPage={setPage} />
       </div>
+      {selectedItems.length > 0 && (
+        <div className="flyout">
+          <p>{selectedItems.length} items are selected</p>
+          <button onClick={() => dispatch(unselectAll())}>Unselect all</button>
+          <button onClick={handleDownload}>Download</button>
+        </div>
+      )}
     </div>
   );
 };

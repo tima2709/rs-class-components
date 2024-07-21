@@ -1,0 +1,292 @@
+{
+  "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts": {
+    "path": "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts",
+    "statementMap": {
+      "0": {
+        "start": { "line": 2, "column": 24 },
+        "end": { "line": 20, "column": 2 }
+      },
+      "1": {
+        "start": { "line": 5, "column": 27 },
+        "end": { "line": 19, "column": 3 }
+      },
+      "2": {
+        "start": { "line": 8, "column": 8 },
+        "end": { "line": 10, "column": 9 }
+      },
+      "3": {
+        "start": { "line": 9, "column": 10 },
+        "end": { "line": 9, "column": 39 }
+      },
+      "4": {
+        "start": { "line": 11, "column": 8 },
+        "end": { "line": 11, "column": 56 }
+      },
+      "5": {
+        "start": { "line": 16, "column": 8 },
+        "end": { "line": 16, "column": 31 }
+      },
+      "6": {
+        "start": { "line": 21, "column": 60 },
+        "end": { "line": 21, "column": 68 }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": { "line": 5, "column": 13 },
+          "end": { "line": 5, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 5, "column": 27 },
+          "end": { "line": 19, "column": 3 }
+        },
+        "line": 5
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": { "line": 7, "column": 13 },
+          "end": { "line": 7, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 7, "column": 48 },
+          "end": { "line": 12, "column": 7 }
+        },
+        "line": 7
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": { "line": 15, "column": 13 },
+          "end": { "line": 15, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 15, "column": 23 },
+          "end": { "line": 17, "column": 7 }
+        },
+        "line": 15
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": { "line": 8, "column": 8 },
+          "end": { "line": 10, "column": 9 }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": { "line": 8, "column": 8 },
+            "end": { "line": 10, "column": 9 }
+          },
+          { "start": {}, "end": {} }
+        ],
+        "line": 8
+      }
+    },
+    "s": { "0": 1, "1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 1 },
+    "f": { "0": 1, "1": 0, "2": 0 },
+    "b": { "0": [0, 0] },
+    "inputSourceMap": {
+      "version": 3,
+      "sources": [
+        "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts"
+      ],
+      "sourcesContent": [
+        "import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';\r\n\r\nexport const apiSlice = createApi({\r\n  reducerPath: 'api',\r\n  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2' }),\r\n  endpoints: (builder) => ({\r\n    getBerries: builder.query({\r\n      query: ({ offset, limit, searchTerm }: { offset: number, limit: number, searchTerm: string }) => {\r\n        if (searchTerm) {\r\n          return `berry/${searchTerm}`;\r\n        }\r\n        return `berry/?offset=${offset}&limit=${limit}`;\r\n      },\r\n    }),\r\n    getBerryById: builder.query({\r\n      query: (name: string) => {\r\n        return `berry/${name}`;\r\n      }\r\n    })\r\n  }),\r\n});\r\n\r\nexport const { useGetBerriesQuery, useGetBerryByIdQuery } = apiSlice;\r\n"
+      ],
+      "mappings": "AAAA,SAAS,WAAW,sBAAsB;AAEnC,aAAM,WAAW,UAAU;AAAA,EAChC,aAAa;AAAA,EACb,WAAW,eAAe,EAAE,SAAS,4BAA4B,CAAC;AAAA,EAClE,WAAW,CAAC,aAAa;AAAA,IACvB,YAAY,QAAQ,MAAM;AAAA,MACxB,OAAO,CAAC,EAAE,QAAQ,OAAO,WAAW,MAA6D;AAC/F,YAAI,YAAY;AACd,iBAAO,SAAS,UAAU;AAAA,QAC5B;AACA,eAAO,iBAAiB,MAAM,UAAU,KAAK;AAAA,MAC/C;AAAA,IACF,CAAC;AAAA,IACD,cAAc,QAAQ,MAAM;AAAA,MAC1B,OAAO,CAAC,SAAiB;AACvB,eAAO,SAAS,IAAI;AAAA,MACtB;AAAA,IACF,CAAC;AAAA,EACH;AACF,CAAC;AAEM,aAAM,EAAE,oBAAoB,qBAAqB,IAAI;",
+      "names": []
+    },
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "a80c72c5ab700f1137e154131a27998fcb21663a"
+  },
+  "D:/RS school projects/react-ts-class-comp/src/redux/slices/selectedItemsSlice.ts": {
+    "path": "D:/RS school projects/react-ts-class-comp/src/redux/slices/selectedItemsSlice.ts",
+    "statementMap": {
+      "0": {
+        "start": { "line": 2, "column": 21 },
+        "end": { "line": 4, "column": 1 }
+      },
+      "1": {
+        "start": { "line": 5, "column": 34 },
+        "end": { "line": 23, "column": 2 }
+      },
+      "2": {
+        "start": { "line": 10, "column": 20 },
+        "end": { "line": 10, "column": 77 }
+      },
+      "3": {
+        "start": { "line": 10, "column": 47 },
+        "end": { "line": 10, "column": 76 }
+      },
+      "4": {
+        "start": { "line": 11, "column": 6 },
+        "end": { "line": 17, "column": 7 }
+      },
+      "5": {
+        "start": { "line": 12, "column": 8 },
+        "end": { "line": 14, "column": 10 }
+      },
+      "6": {
+        "start": { "line": 13, "column": 20 },
+        "end": { "line": 13, "column": 49 }
+      },
+      "7": {
+        "start": { "line": 16, "column": 8 },
+        "end": { "line": 16, "column": 41 }
+      },
+      "8": {
+        "start": { "line": 20, "column": 6 },
+        "end": { "line": 20, "column": 23 }
+      },
+      "9": {
+        "start": { "line": 24, "column": 43 },
+        "end": { "line": 24, "column": 69 }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": { "line": 9, "column": 16 },
+          "end": { "line": 9, "column": 17 }
+        },
+        "loc": {
+          "start": { "line": 9, "column": 35 },
+          "end": { "line": 18, "column": 5 }
+        },
+        "line": 9
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": { "line": 10, "column": 37 },
+          "end": { "line": 10, "column": 38 }
+        },
+        "loc": {
+          "start": { "line": 10, "column": 47 },
+          "end": { "line": 10, "column": 76 }
+        },
+        "line": 10
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": { "line": 13, "column": 10 },
+          "end": { "line": 13, "column": 11 }
+        },
+        "loc": {
+          "start": { "line": 13, "column": 20 },
+          "end": { "line": 13, "column": 49 }
+        },
+        "line": 13
+      },
+      "3": {
+        "name": "(anonymous_3)",
+        "decl": {
+          "start": { "line": 19, "column": 17 },
+          "end": { "line": 19, "column": 18 }
+        },
+        "loc": {
+          "start": { "line": 19, "column": 28 },
+          "end": { "line": 21, "column": 5 }
+        },
+        "line": 19
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": { "line": 11, "column": 6 },
+          "end": { "line": 17, "column": 7 }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": { "line": 11, "column": 6 },
+            "end": { "line": 17, "column": 7 }
+          },
+          {
+            "start": { "line": 15, "column": 13 },
+            "end": { "line": 17, "column": 7 }
+          }
+        ],
+        "line": 11
+      }
+    },
+    "s": {
+      "0": 1,
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 1
+    },
+    "f": { "0": 0, "1": 0, "2": 0, "3": 0 },
+    "b": { "0": [0, 0] },
+    "inputSourceMap": {
+      "version": 3,
+      "sources": [
+        "D:/RS school projects/react-ts-class-comp/src/redux/slices/selectedItemsSlice.ts"
+      ],
+      "sourcesContent": [
+        "import { createSlice, PayloadAction } from '@reduxjs/toolkit';\r\nimport { apiSlice } from '../query/apiSlice';\r\n\r\ninterface ItemType {\r\n  id: string;\r\n  name: string;\r\n}\r\n\r\ninterface SelectedItemsSlice {\r\n  items: ItemType[];\r\n}\r\n\r\nconst initialState: SelectedItemsSlice = {\r\n  items: [],\r\n};\r\n\r\nexport const selectedItemsSlice = createSlice({\r\n  name: 'selectedItems',\r\n  initialState,\r\n  reducers: {\r\n    selectItem: (state, action: PayloadAction<ItemType>) => {\r\n      const exist = state.items.find((item) => item.id === action.payload.id);\r\n      if (exist) {\r\n        state.items = state.items.filter(\r\n          (item) => item.id !== action.payload.id,\r\n        );\r\n      } else {\r\n        state.items.push(action.payload);\r\n      }\r\n    },\r\n    unselectAll: (state) => {\r\n      state.items = []\r\n    }\r\n  }\r\n});\r\n\r\nexport const {selectItem, unselectAll} = selectedItemsSlice.actions;\r\nexport default selectedItemsSlice.reducer;\r\n"
+      ],
+      "mappings": "AAAA,SAAS,mBAAkC;AAY3C,MAAM,eAAmC;AAAA,EACvC,OAAO,CAAC;AACV;AAEO,aAAM,qBAAqB,YAAY;AAAA,EAC5C,MAAM;AAAA,EACN;AAAA,EACA,UAAU;AAAA,IACR,YAAY,CAAC,OAAO,WAAoC;AACtD,YAAM,QAAQ,MAAM,MAAM,KAAK,CAAC,SAAS,KAAK,OAAO,OAAO,QAAQ,EAAE;AACtE,UAAI,OAAO;AACT,cAAM,QAAQ,MAAM,MAAM;AAAA,UACxB,CAAC,SAAS,KAAK,OAAO,OAAO,QAAQ;AAAA,QACvC;AAAA,MACF,OAAO;AACL,cAAM,MAAM,KAAK,OAAO,OAAO;AAAA,MACjC;AAAA,IACF;AAAA,IACA,aAAa,CAAC,UAAU;AACtB,YAAM,QAAQ,CAAC;AAAA,IACjB;AAAA,EACF;AACF,CAAC;AAEM,aAAM,EAAC,YAAY,YAAW,IAAI,mBAAmB;AAC5D,eAAe,mBAAmB;",
+      "names": []
+    },
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "4664eb76ed876e684d020ccec1306d3b721b2995"
+  },
+  "D:/RS school projects/react-ts-class-comp/src/redux/store.ts": {
+    "path": "D:/RS school projects/react-ts-class-comp/src/redux/store.ts",
+    "statementMap": {
+      "0": {
+        "start": { "line": 4, "column": 14 },
+        "end": { "line": 10, "column": 2 }
+      },
+      "1": {
+        "start": { "line": 9, "column": 40 },
+        "end": { "line": 9, "column": 90 }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": { "line": 9, "column": 14 },
+          "end": { "line": 9, "column": 15 }
+        },
+        "loc": {
+          "start": { "line": 9, "column": 40 },
+          "end": { "line": 9, "column": 90 }
+        },
+        "line": 9
+      }
+    },
+    "branchMap": {},
+    "s": { "0": 1, "1": 1 },
+    "f": { "0": 1 },
+    "b": {},
+    "inputSourceMap": {
+      "version": 3,
+      "sources": [
+        "D:/RS school projects/react-ts-class-comp/src/redux/store.ts"
+      ],
+      "sourcesContent": [
+        "import { configureStore } from '@reduxjs/toolkit';\r\nimport { apiSlice } from './query/apiSlice';\r\nimport selectedItemsReducer from './slices/selectedItemsSlice';\r\n\r\nconst store = configureStore({\r\n  reducer: {\r\n    [apiSlice.reducerPath]: apiSlice.reducer,\r\n    selectedItems: selectedItemsReducer,\r\n  },\r\n  middleware: (getDefaultMiddleware) =>\r\n    getDefaultMiddleware().concat(apiSlice.middleware),\r\n});\r\n\r\nexport type AppDispatch = typeof store.dispatch;\r\nexport type RootState = ReturnType<typeof store.getState>;\r\nexport default store;\r\n"
+      ],
+      "mappings": "AAAA,SAAS,sBAAsB;AAC/B,SAAS,gBAAgB;AACzB,OAAO,0BAA0B;AAEjC,MAAM,QAAQ,eAAe;AAAA,EAC3B,SAAS;AAAA,IACP,CAAC,SAAS,WAAW,GAAG,SAAS;AAAA,IACjC,eAAe;AAAA,EACjB;AAAA,EACA,YAAY,CAAC,yBACX,qBAAqB,EAAE,OAAO,SAAS,UAAU;AACrD,CAAC;AAID,eAAe;",
+      "names": []
+    },
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "ff9c14d4cd48023c1c2e006e75a9705cd895476b"
+  }
+}

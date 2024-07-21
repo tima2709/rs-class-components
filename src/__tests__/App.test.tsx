@@ -1,39 +1,46 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+import { describe, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from '../App';
-import '@testing-library/jest-dom';
-import { describe, it, expect } from 'vitest';
+import { ThemeProvider } from '../themeContext';
+import userEvent from '@testing-library/user-event';
 
-describe('App Component', () => {
-  it('renders SearchPage for the root route', () => {
+describe('App component', () => {
+  test('renders search page and allows theme toggling', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>,
     );
 
-    expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
+    const themeToggleButton = screen.getByRole('button', {
+      name: /Switch to dark theme/i,
+    });
+    expect(themeToggleButton).toBeInTheDocument();
+
+    expect(document.body.className).toBe('light');
+
+    userEvent.click(themeToggleButton);
+
+    expect(document.body.className).toBe('dark');
+
+    const searchPage = screen.getByText(/search/i);
+    expect(searchPage).toBeInTheDocument();
   });
 
-  it('renders NotFoundPage for an unknown route', () => {
+  test('renders not found page for unknown routes', () => {
     render(
-      <MemoryRouter initialEntries={['/unknown']}>
-        <App />
-      </MemoryRouter>,
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>,
     );
 
-    expect(screen.getByText('not found')).toBeInTheDocument();
-  });
-
-  it('renders SearchedItem for the SearchedItem route', async () => {
-    render(
-      <MemoryRouter initialEntries={['/SearchedItem/1']}>
-        <App />
-      </MemoryRouter>,
-    );
-
-    await waitFor(() =>
-      expect(screen.getByText('Loading ...')).toBeInTheDocument(),
-    );
+    const notFoundPage = screen.getByText(/404/i);
+    expect(notFoundPage).toBeInTheDocument();
   });
 });

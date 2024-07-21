@@ -32,13 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({ page, setPage }) => {
       <button disabled={page === 7} onClick={() => setPage(7)}>
         7
       </button>
-      <button disabled={page === 8} onClick={() => setPage(8)}>
-        8
-      </button>
-      <button disabled={page === 9} onClick={() => setPage(9)}>
-        9
-      </button>
-      <button disabled={page === 9} onClick={() => setPage(page + 1)}>
+      <button disabled={page === 7} onClick={() => setPage(page + 1)}>
         next page
       </button>
     </>

@@ -5,10 +5,10 @@ const Search: React.FC = () => {
   const [value, setValue] = useLocalStorage('searchTerm', '');
 
   return (
-    <div>
+    <div style={{ margin: '20px' }}>
       <input
         type="text"
-        placeholder="Search by ID..."
+        placeholder="Search by ID or full name"
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />

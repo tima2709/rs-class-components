@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 const SearchPage: React.FC = () => {
   return (
     <>
-      <div style={{ display: 'flex', gap: '50px' }}>
+      <div style={{ display: 'flex', gap: '50px', justifyContent: 'center' }}>
         <div style={{ width: '260px' }}>
           <Search />
           <Result />

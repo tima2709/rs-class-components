@@ -16,8 +16,6 @@ describe('Pagination Component', () => {
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('6')).toBeInTheDocument();
     expect(screen.getByText('7')).toBeInTheDocument();
-    expect(screen.getByText('8')).toBeInTheDocument();
-    expect(screen.getByText('9')).toBeInTheDocument();
     expect(screen.getByText('next page')).toBeInTheDocument();
   });
 
@@ -29,7 +27,7 @@ describe('Pagination Component', () => {
 
   it('disables next page button on last page', () => {
     const setPage = vi.fn();
-    render(<Pagination page={9} setPage={setPage} />);
+    render(<Pagination page={7} setPage={setPage} />);
     expect(screen.getByText('next page')).toBeDisabled();
   });
 
@@ -42,8 +40,8 @@ describe('Pagination Component', () => {
     expect(setPage).toHaveBeenCalledWith(6);
     fireEvent.click(screen.getByText('1'));
     expect(setPage).toHaveBeenCalledWith(1);
-    fireEvent.click(screen.getByText('9'));
-    expect(setPage).toHaveBeenCalledWith(9);
+    fireEvent.click(screen.getByText('7'));
+    expect(setPage).toHaveBeenCalledWith(7);
   });
 
   it('disables buttons for the current page', () => {
@@ -73,7 +71,7 @@ describe('Pagination Component', () => {
 
   it('does not exceed the maximum page number', () => {
     const setPage = vi.fn();
-    render(<Pagination page={9} setPage={setPage} />);
+    render(<Pagination page={7} setPage={setPage} />);
     fireEvent.click(screen.getByText('next page'));
     expect(setPage).not.toHaveBeenCalledWith(10);
   });

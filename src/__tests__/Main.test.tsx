@@ -1,34 +1,52 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from '../App';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import App from '../App';
+import rootReducer from '../redux/slices/selectedItemsSlice';
 
-describe('Main Entry Point', () => {
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+describe('App Component', () => {
   beforeEach(() => {
-    const root = document.createElement('div');
-    root.id = 'root';
-    document.body.appendChild(root);
+    vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    document.body.innerHTML = '';
+  it('renders ThemeToggleButton and initial route', () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    const themeToggleButton = screen.getByRole('button', {
+      name: /Switch to dark theme/i,
+    });
+    expect(themeToggleButton).toBeInTheDocument();
+
+    const searchPageElement = screen.getByText(/SearchPage content/i);
+    expect(searchPageElement).toBeInTheDocument();
   });
 
-  it('renders without crashing', () => {
-    const rootElement = document.getElementById('root');
-    expect(rootElement).not.toBeNull();
+  it('renders NotFoundPage for invalid route', () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>,
+    );
 
-    if (rootElement) {
-      expect(() => {
-        ReactDOM.createRoot(rootElement).render(
-          <React.StrictMode>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </React.StrictMode>,
-        );
-      }).not.toThrow();
-    }
+    window.history.pushState({}, 'Test page', '/non-existing-route');
+
+    const notFoundPageElement = screen.getByText(/not found/i);
+    expect(notFoundPageElement).toBeInTheDocument();
   });
 });

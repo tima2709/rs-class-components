@@ -1,47 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-
-interface Film {
-  name: string;
-}
+import { useGetBerryByIdQuery } from '../redux/query/apiSlice';
 
 const SearchedItem: React.FC = () => {
-  const params = useParams();
-  const [data, setData] = useState<Film | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { name } = useParams<{ name: string }>();
+  const { data: pokemon, error, isLoading } = useGetBerryByIdQuery(name);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://swapi.dev/api/people/${params.id}`,
-        );
-        const data: Film = await response.json();
-        setData(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [params.id]);
-
-  if (loading) return <div style={{ marginTop: '20px' }}>Loading ...</div>;
+  if (isLoading) return <div style={{ marginTop: '20px' }}>Loading ...</div>;
+  if (error) return <div>Ooops</div>;
 
   return (
     <div>
       <div>
         <Link to="/">
-          <button hidden={!data} onClick={() => setData(null)}>
-            close
-          </button>
+          <button hidden={!pokemon}>close</button>
         </Link>
       </div>
       <div>
-        <h3>{data?.name}</h3>
+        <h3>{pokemon?.name}</h3>
       </div>
     </div>
   );

@@ -1,0 +1,106 @@
+{
+  "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts": {
+    "path": "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts",
+    "statementMap": {
+      "0": {
+        "start": { "line": 2, "column": 24 },
+        "end": { "line": 20, "column": 2 }
+      },
+      "1": {
+        "start": { "line": 5, "column": 27 },
+        "end": { "line": 19, "column": 3 }
+      },
+      "2": {
+        "start": { "line": 8, "column": 8 },
+        "end": { "line": 10, "column": 9 }
+      },
+      "3": {
+        "start": { "line": 9, "column": 10 },
+        "end": { "line": 9, "column": 39 }
+      },
+      "4": {
+        "start": { "line": 11, "column": 8 },
+        "end": { "line": 11, "column": 56 }
+      },
+      "5": {
+        "start": { "line": 16, "column": 8 },
+        "end": { "line": 16, "column": 31 }
+      },
+      "6": {
+        "start": { "line": 21, "column": 60 },
+        "end": { "line": 21, "column": 68 }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": { "line": 5, "column": 13 },
+          "end": { "line": 5, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 5, "column": 27 },
+          "end": { "line": 19, "column": 3 }
+        },
+        "line": 5
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": { "line": 7, "column": 13 },
+          "end": { "line": 7, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 7, "column": 48 },
+          "end": { "line": 12, "column": 7 }
+        },
+        "line": 7
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": { "line": 15, "column": 13 },
+          "end": { "line": 15, "column": 14 }
+        },
+        "loc": {
+          "start": { "line": 15, "column": 23 },
+          "end": { "line": 17, "column": 7 }
+        },
+        "line": 15
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": { "line": 8, "column": 8 },
+          "end": { "line": 10, "column": 9 }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": { "line": 8, "column": 8 },
+            "end": { "line": 10, "column": 9 }
+          },
+          { "start": {}, "end": {} }
+        ],
+        "line": 8
+      }
+    },
+    "s": { "0": 1, "1": 1, "2": 1, "3": 0, "4": 1, "5": 0, "6": 1 },
+    "f": { "0": 1, "1": 1, "2": 0 },
+    "b": { "0": [0, 1] },
+    "inputSourceMap": {
+      "version": 3,
+      "sources": [
+        "D:/RS school projects/react-ts-class-comp/src/redux/query/apiSlice.ts"
+      ],
+      "sourcesContent": [
+        "import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';\r\n\r\nexport const apiSlice = createApi({\r\n  reducerPath: 'api',\r\n  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2' }),\r\n  endpoints: (builder) => ({\r\n    getBerries: builder.query({\r\n      query: ({ offset, limit, searchTerm }: { offset: number, limit: number, searchTerm: string }) => {\r\n        if (searchTerm) {\r\n          return `berry/${searchTerm}`;\r\n        }\r\n        return `berry/?offset=${offset}&limit=${limit}`;\r\n      },\r\n    }),\r\n    getBerryById: builder.query({\r\n      query: (name: string) => {\r\n        return `berry/${name}`;\r\n      }\r\n    })\r\n  }),\r\n});\r\n\r\nexport const { useGetBerriesQuery, useGetBerryByIdQuery } = apiSlice;\r\n"
+      ],
+      "mappings": "AAAA,SAAS,WAAW,sBAAsB;AAEnC,aAAM,WAAW,UAAU;AAAA,EAChC,aAAa;AAAA,EACb,WAAW,eAAe,EAAE,SAAS,4BAA4B,CAAC;AAAA,EAClE,WAAW,CAAC,aAAa;AAAA,IACvB,YAAY,QAAQ,MAAM;AAAA,MACxB,OAAO,CAAC,EAAE,QAAQ,OAAO,WAAW,MAA6D;AAC/F,YAAI,YAAY;AACd,iBAAO,SAAS,UAAU;AAAA,QAC5B;AACA,eAAO,iBAAiB,MAAM,UAAU,KAAK;AAAA,MAC/C;AAAA,IACF,CAAC;AAAA,IACD,cAAc,QAAQ,MAAM;AAAA,MAC1B,OAAO,CAAC,SAAiB;AACvB,eAAO,SAAS,IAAI;AAAA,MACtB;AAAA,IACF,CAAC;AAAA,EACH;AACF,CAAC;AAEM,aAAM,EAAE,oBAAoB,qBAAqB,IAAI;",
+      "names": []
+    },
+    "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    "hash": "a80c72c5ab700f1137e154131a27998fcb21663a"
+  }
+}
