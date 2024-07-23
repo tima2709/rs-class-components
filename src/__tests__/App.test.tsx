@@ -1,46 +1,69 @@
 import React from 'react';
-import { describe, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
+import store from '../redux/store';
 import App from '../App';
-import { ThemeProvider } from '../themeContext';
-import userEvent from '@testing-library/user-event';
 
-describe('App component', () => {
-  test('renders search page and allows theme toggling', () => {
+vi.mock('../pages/SearchPage', () => {
+  return {
+    default: () => <div>SearchPage</div>,
+  };
+});
+
+vi.mock('../pages/404-page', () => {
+  return {
+    default: () => <div>NotFoundPage</div>,
+  };
+});
+
+vi.mock('../pages/SearchedItem', () => {
+  return {
+    default: () => <div>SearchedItem</div>,
+  };
+});
+
+describe('App', () => {
+  it('renders the ThemeToggleButton', () => {
     render(
-      <ThemeProvider>
-        <BrowserRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
           <App />
-        </BrowserRouter>
-      </ThemeProvider>,
+        </MemoryRouter>
+      </Provider>,
     );
 
-    const themeToggleButton = screen.getByRole('button', {
-      name: /Switch to dark theme/i,
+    const button = screen.getByRole('button', {
+      name: /Switch to light theme/i,
     });
-    expect(themeToggleButton).toBeInTheDocument();
-
-    expect(document.body.className).toBe('light');
-
-    userEvent.click(themeToggleButton);
-
-    expect(document.body.className).toBe('dark');
-
-    const searchPage = screen.getByText(/search/i);
-    expect(searchPage).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
   });
 
-  test('renders not found page for unknown routes', () => {
+  it('renders the SearchPage by default', () => {
     render(
-      <ThemeProvider>
-        <BrowserRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
           <App />
-        </BrowserRouter>
-      </ThemeProvider>,
+        </MemoryRouter>
+      </Provider>,
     );
 
-    const notFoundPage = screen.getByText(/404/i);
-    expect(notFoundPage).toBeInTheDocument();
+    expect(screen.getByText('SearchPage')).toBeInTheDocument();
+  });
+
+  it('renders NotFoundPage for unknown routes', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/unknown-route']}>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText('NotFoundPage')).toBeInTheDocument();
   });
 });

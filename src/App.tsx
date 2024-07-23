@@ -7,7 +7,12 @@ import SearchedItem from './pages/SearchedItem';
 import { ThemeProvider, useTheme } from './themeContext';
 
 const ThemeToggleButton: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
+  const context = useTheme();
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+
+  const { theme, toggleTheme } = context;
 
   return (
     <button onClick={toggleTheme}>

@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetBerryByIdQuery } from '../redux/query/apiSlice';
+import {
+  UseGetBerryByIdQuery,
+  useGetBerryByIdQuery,
+} from '../redux/query/apiSlice';
 
 const SearchedItem: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const { data: pokemon, error, isLoading } = useGetBerryByIdQuery(name);
+  const {
+    data: pokemon,
+    error,
+    isLoading,
+  }: UseGetBerryByIdQuery = useGetBerryByIdQuery(name);
 
   if (isLoading) return <div style={{ marginTop: '20px' }}>Loading ...</div>;
   if (error) return <div>Ooops</div>;

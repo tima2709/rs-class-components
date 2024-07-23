@@ -1,23 +1,44 @@
-import { render, screen, act } from '@testing-library/react';
-import SearchPage from '../pages/SearchPage';
-import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
+import store from '../redux/store';
+import SearchPage from '../pages/SearchPage';
+import { useGetBerriesQuery } from '../redux/query/apiSlice';
+
+vi.mock('../redux/query/apiSlice', async () => {
+  const actual = await vi.importActual('../redux/query/apiSlice');
+  return {
+    ...actual,
+    useGetBerriesQuery: vi.fn(),
+  };
+});
 
 describe('SearchPage', () => {
-  it('renders Search and Result components', () => {
-    act(() => {
-      render(
-        <MemoryRouter>
-          <SearchPage />
-        </MemoryRouter>,
-      );
+  it('renders Search and Result components', async () => {
+    (useGetBerriesQuery as vi.Mock).mockReturnValue({
+      data: { results: [] },
+      isLoading: true,
+      error: null,
     });
 
-    const searchInput = screen.getByPlaceholderText('Search...');
-    expect(searchInput).toBeInTheDocument();
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<SearchPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>,
+    );
 
-    const resultLoadingText = screen.getByText(/Loading.../i);
-    expect(resultLoadingText).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Search by ID or full name'),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
   });
 });

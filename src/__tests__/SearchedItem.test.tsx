@@ -1,88 +1,64 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import SearchedItem from '../pages/SearchedItem';
-import { apiSlice, useGetBerryByIdQuery } from '../redux/query/apiSlice';
-import selectedItemsReducer from '../redux/slices/selectedItemsSlice';
+import { useGetBerryByIdQuery } from '../redux/query/apiSlice';
+import { GetBerriesQueryResult } from '../redux/types';
+import { render } from './test-utils';
 
-// Мокаем API вызов
-vi.mock('../redux/query/apiSlice', async (importOriginal) => {
-  const actual = await importOriginal();
+vi.mock('../redux/query/apiSlice', async () => {
+  const actual = await vi.importActual('../redux/query/apiSlice');
   return {
     ...actual,
     useGetBerryByIdQuery: vi.fn(),
   };
 });
 
-const store = configureStore({
-  reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-    selectedItems: selectedItemsReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
-});
-
-const renderWithProviders = (ui: React.ReactElement, { route = '/' } = {}) => {
-  window.history.pushState({}, 'Test page', route);
-
-  return render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/SearchedItem/:name" element={ui} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>,
-  );
-};
-
-describe('SearchedItem Component', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
+describe('SearchedItem', () => {
   it('renders loading state initially', () => {
-    (useGetBerryByIdQuery as jest.Mock).mockReturnValue({ isLoading: true });
-    renderWithProviders(<SearchedItem />, {
-      route: '/SearchedItem/test-berry',
+    (useGetBerryByIdQuery as vi.Mock).mockReturnValue({
+      data: null,
+      isLoading: true,
+      error: null,
+    } as GetBerriesQueryResult);
+
+    render(<SearchedItem />, {
+      route: '/SearchedItem/Berry1',
+      path: '/SearchedItem/:name',
     });
-    expect(screen.getByText(/Loading .../i)).toBeInTheDocument();
+
+    expect(screen.getByText('Loading ...')).toBeInTheDocument();
   });
 
-  it('displays error message if there is an error', () => {
-    (useGetBerryByIdQuery as jest.Mock).mockReturnValue({ error: true });
-    renderWithProviders(<SearchedItem />, {
-      route: '/SearchedItem/test-berry',
-    });
-    expect(screen.getByText(/Ooops/i)).toBeInTheDocument();
-  });
-
-  it('renders berry details when data is loaded', () => {
-    const berry = { name: 'test-berry', url: 'url' };
-    (useGetBerryByIdQuery as jest.Mock).mockReturnValue({
-      data: berry,
+  it('renders error state when there is an error', () => {
+    (useGetBerryByIdQuery as vi.Mock).mockReturnValue({
+      data: null,
       isLoading: false,
+      error: true,
+    } as GetBerriesQueryResult);
+
+    render(<SearchedItem />, {
+      route: '/SearchedItem/Berry1',
+      path: '/SearchedItem/:name',
     });
-    renderWithProviders(<SearchedItem />, {
-      route: '/SearchedItem/test-berry',
-    });
-    expect(screen.getByText(berry.name)).toBeInTheDocument();
+
+    expect(screen.getByText('Ooops')).toBeInTheDocument();
   });
 
-  it('renders close button when data is loaded', () => {
-    const berry = { name: 'test-berry', url: 'url' };
-    (useGetBerryByIdQuery as jest.Mock).mockReturnValue({
-      data: berry,
+  it('renders berry data when available', () => {
+    (useGetBerryByIdQuery as vi.Mock).mockReturnValue({
+      data: { name: 'Berry1' },
       isLoading: false,
+      error: null,
+    } as GetBerriesQueryResult);
+
+    render(<SearchedItem />, {
+      route: '/SearchedItem/Berry1',
+      path: '/SearchedItem/:name',
     });
-    renderWithProviders(<SearchedItem />, {
-      route: '/SearchedItem/test-berry',
-    });
-    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+
+    expect(screen.getByText('Berry1')).toBeInTheDocument();
+    expect(screen.getByText('close')).toBeInTheDocument();
   });
 });

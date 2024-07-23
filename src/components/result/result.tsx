@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import Pagination from '../pagination/pagination';
-import { useGetBerriesQuery } from '../../redux/query/apiSlice';
+import {
+  UseGetBerriesQuery,
+  useGetBerriesQuery,
+} from '../../redux/query/apiSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { selectItem, unselectAll } from '../../redux/slices/selectedItemsSlice';
+import { RootState } from '../../redux/store';
 
 interface Berry {
   name: string;
@@ -16,12 +20,14 @@ const Result: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
-  const [page, setPage] = useState(initialPage);
+  const [page, setPage] = useState<number>(initialPage);
   const dispatch = useAppDispatch();
-  const selectedItems = useAppSelector((state) => state.selectedItems.items);
+  const selectedItems = useAppSelector(
+    (state: RootState) => state.selectedItems.items,
+  );
 
   const offset = (page - 1) * 10;
-  const { data, error, isLoading } = useGetBerriesQuery({
+  const { data, error, isLoading }: UseGetBerriesQuery = useGetBerriesQuery({
     offset,
     limit: 10,
     searchTerm,
@@ -41,7 +47,7 @@ const Result: React.FC = () => {
   const handleDownload = () => {
     const csvContent =
       'data:text/csv;charset=utf-8,' +
-      +selectedItems.map((item) => `${item.id},${item.name}`).join('\n');
+      selectedItems.map((item) => `${item.id},${item.name}`).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
@@ -50,7 +56,6 @@ const Result: React.FC = () => {
   };
 
   if (error) return <div>Ooops</div>;
-
   return (
     <div>
       {!isLoading ? (
@@ -62,6 +67,7 @@ const Result: React.FC = () => {
                   type="checkbox"
                   checked={isSelected(el.url)}
                   onChange={() => handleCheckboxChange(el)}
+                  aria-label={el.name}
                 />
                 <NavLink to={`/SearchedItem/${el.name}`}>{el.name}</NavLink>
               </div>
