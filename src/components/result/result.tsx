@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
-import Pagination from '../pagination/pagination';
+'use client';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Search from '../search/search';
+import useLocalStorage from '../hooks/useLocalstorage';
 import {
-  UseGetBerriesQuery,
   useGetBerriesQuery,
+  UseGetBerriesQuery,
 } from '../../redux/query/apiSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/hooks';
 import { selectItem, unselectAll } from '../../redux/slices/selectedItemsSlice';
+import Pagination from '../pagination/pagination';
 import { RootState } from '../../redux/store';
 
 interface Berry {
@@ -16,26 +19,27 @@ interface Berry {
 }
 
 const Result: React.FC = () => {
-  const [searchTerm] = useLocalStorage<string>('searchTerm', '');
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const initialPage = parseInt(searchParams.get('page') || '1', 10);
+  const [searchTerm, setSearchTerm] = useLocalStorage<string>('');
+  const [query, setQuery] = useState<string>('');
+  const router = useRouter();
+  const initialPage = parseInt((router.query.page as string) || '1', 10);
   const [page, setPage] = useState<number>(initialPage);
   const dispatch = useAppDispatch();
   const selectedItems = useAppSelector(
     (state: RootState) => state.selectedItems.items,
   );
 
-  const offset = (page - 1) * 10;
+  console.log(query, 'query');
+
   const { data, error, isLoading }: UseGetBerriesQuery = useGetBerriesQuery({
-    offset,
+    page,
     limit: 10,
-    searchTerm,
+    query,
   });
 
   useEffect(() => {
-    navigate(`?page=${page}`);
-  }, [page, navigate]);
+    router.push(`?page=${page}`);
+  }, [page]);
 
   const handleCheckboxChange = (berry: Berry) => {
     dispatch(selectItem({ id: berry.url, name: berry.name }));
@@ -55,13 +59,26 @@ const Result: React.FC = () => {
     link.click();
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setQuery(searchTerm);
+  };
+
   if (error) return <div>Ooops</div>;
   return (
     <div>
+      <Search
+        searchTerm={searchTerm}
+        onInputChange={handleInputChange}
+        onSearch={handleSearch}
+      />
       {!isLoading ? (
         <div>
-          {data?.results?.length ? (
-            data.results.map((el: Berry, idx: number) => (
+          {data?.data?.length ? (
+            data.data.map((el: Berry, idx: number) => (
               <div key={idx}>
                 <input
                   type="checkbox"
@@ -69,11 +86,11 @@ const Result: React.FC = () => {
                   onChange={() => handleCheckboxChange(el)}
                   aria-label={el.name}
                 />
-                <NavLink to={`/SearchedItem/${el.name}`}>{el.name}</NavLink>
+                <Link href={`/SearchedItem/${el.id}`}>{el.name}</Link>
               </div>
             ))
           ) : (
-            <NavLink to={`/SearchedItem/${data.name}`}>{data.name}</NavLink>
+            <Link href={`/SearchedItem/${data.name}`}>{data.name}</Link>
           )}
         </div>
       ) : (

@@ -7,19 +7,19 @@ import { describe, it, expect, vi } from 'vitest';
 import store from '../redux/store';
 import App from '../App';
 
-vi.mock('../pages/SearchPage', () => {
+vi.mock('../pagesComponents/Index', () => {
   return {
     default: () => <div>SearchPage</div>,
   };
 });
 
-vi.mock('../pages/404-page', () => {
+vi.mock('../pagesComponents/404-page', () => {
   return {
     default: () => <div>NotFoundPage</div>,
   };
 });
 
-vi.mock('../pages/SearchedItem', () => {
+vi.mock('../pagesComponents/Index', () => {
   return {
     default: () => <div>SearchedItem</div>,
   };
@@ -41,7 +41,7 @@ describe('App', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('renders the SearchPage by default', () => {
+  it('renders the Index by default', () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>

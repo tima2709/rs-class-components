@@ -3,22 +3,22 @@ import { GetBerriesResponse, GetBerryByIdResponse } from '../types';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.pokemontcg.io/v2' }),
   endpoints: (builder) => ({
     getBerries: builder.query<
       GetBerriesResponse,
-      { offset: number; limit: number; searchTerm: string }
+      { page: number; limit: number; query: string }
     >({
-      query: ({ offset, limit, searchTerm }) => {
-        if (searchTerm) {
-          return `berry/${searchTerm}`;
+      query: ({ page, limit, query }) => {
+        if (query) {
+          return `cards/?page=${page}&pageSize=${limit}&q=name:${query}*`;
         }
-        return `berry/?offset=${offset}&limit=${limit}`;
+        return `cards/?page=${page}&pageSize=${limit}`;
       },
     }),
     getBerryById: builder.query<GetBerryByIdResponse, string>({
       query: (name: string) => {
-        return `berry/${name}`;
+        return `cards/${name}`;
       },
     }),
   }),

@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
-import SearchedItem from '../pages/SearchedItem';
+import Index from '../../pages/SearchedItem';
 import { useGetBerryByIdQuery } from '../redux/query/apiSlice';
 import { GetBerriesQueryResult } from '../redux/types';
 import { render } from './test-utils';
@@ -15,7 +15,7 @@ vi.mock('../redux/query/apiSlice', async () => {
   };
 });
 
-describe('SearchedItem', () => {
+describe('Index', () => {
   it('renders loading state initially', () => {
     (useGetBerryByIdQuery as vi.Mock).mockReturnValue({
       data: null,
@@ -23,9 +23,9 @@ describe('SearchedItem', () => {
       error: null,
     } as GetBerriesQueryResult);
 
-    render(<SearchedItem />, {
-      route: '/SearchedItem/Berry1',
-      path: '/SearchedItem/:name',
+    render(<Index />, {
+      route: '/Index/Berry1',
+      path: '/Index/:name',
     });
 
     expect(screen.getByText('Loading ...')).toBeInTheDocument();
@@ -38,9 +38,9 @@ describe('SearchedItem', () => {
       error: true,
     } as GetBerriesQueryResult);
 
-    render(<SearchedItem />, {
-      route: '/SearchedItem/Berry1',
-      path: '/SearchedItem/:name',
+    render(<Index />, {
+      route: '/Index/Berry1',
+      path: '/Index/:name',
     });
 
     expect(screen.getByText('Ooops')).toBeInTheDocument();
@@ -53,9 +53,9 @@ describe('SearchedItem', () => {
       error: null,
     } as GetBerriesQueryResult);
 
-    render(<SearchedItem />, {
-      route: '/SearchedItem/Berry1',
-      path: '/SearchedItem/:name',
+    render(<Index />, {
+      route: '/Index/Berry1',
+      path: '/Index/:name',
     });
 
     expect(screen.getByText('Berry1')).toBeInTheDocument();

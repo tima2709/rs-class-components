@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
 import store from '../redux/store';
-import SearchPage from '../pages/SearchPage';
+import Index from '../../pages/SearchPage';
 import { useGetBerriesQuery } from '../redux/query/apiSlice';
 
 vi.mock('../redux/query/apiSlice', async () => {
@@ -16,7 +16,7 @@ vi.mock('../redux/query/apiSlice', async () => {
   };
 });
 
-describe('SearchPage', () => {
+describe('Index', () => {
   it('renders Search and Result components', async () => {
     (useGetBerriesQuery as vi.Mock).mockReturnValue({
       data: { results: [] },
@@ -28,7 +28,7 @@ describe('SearchPage', () => {
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<SearchPage />} />
+            <Route path="/" element={<Index />} />
           </Routes>
         </BrowserRouter>
       </Provider>,

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import NotFoundPage from '../pages/404-page';
+import NotFoundPage from '../../pages/404-page';
 import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
 
