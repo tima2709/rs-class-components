@@ -1,35 +1,28 @@
-import React, { Component } from 'react';
+'use client';
+import React, { ChangeEvent } from 'react';
 
-interface InputType {
-  value: string;
+interface SearchInputProps {
+  searchTerm: string;
+  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
 }
 
-class Search extends Component<NonNullable<unknown>, InputType> {
-  state: InputType = {
-    value: localStorage.getItem('value') || '',
-  };
-
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: e.target.value });
-  };
-
-  handleSearch = () => {
-    const searchedTerm = this.state.value.trim();
-    localStorage.setItem('value', searchedTerm);
-  };
-
-  render() {
-    return (
-      <div>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={this.handleSearch}>Search</button>
-      </div>
-    );
-  }
-}
+const Search: React.FC<SearchInputProps> = ({
+  searchTerm,
+  onInputChange,
+  onSearch,
+}) => {
+  return (
+    <div style={{ margin: '20px' }}>
+      <input
+        type="text"
+        placeholder="Search by ID or full name"
+        value={searchTerm}
+        onChange={onInputChange}
+      />
+      <button onClick={onSearch}>Search</button>
+    </div>
+  );
+};
 
 export default Search;
