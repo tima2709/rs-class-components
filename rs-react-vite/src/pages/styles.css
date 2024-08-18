@@ -1,0 +1,16 @@
+.formStyle {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.previewImage img {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  padding: 10px;
+}
+
+.homePage {
+  display: flex;
+  gap: 50px;
+}
