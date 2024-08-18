@@ -1,35 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
-interface InputType {
-  value: string;
-}
+const Search: React.FC = () => {
+  const [value, setValue] = useLocalStorage('searchTerm', '');
 
-class Search extends Component<NonNullable<unknown>, InputType> {
-  state: InputType = {
-    value: localStorage.getItem('value') || '',
-  };
-
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: e.target.value });
-  };
-
-  handleSearch = () => {
-    const searchedTerm = this.state.value.trim();
-    localStorage.setItem('value', searchedTerm);
-  };
-
-  render() {
-    return (
-      <div>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={this.handleSearch}>Search</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div style={{ margin: '20px' }}>
+      <input
+        type="text"
+        placeholder="Search by ID or full name"
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+      />
+    </div>
+  );
+};
 
 export default Search;
